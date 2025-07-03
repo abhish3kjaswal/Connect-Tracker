@@ -84,3 +84,19 @@ USERS
 
 CONNECT
 - 
+
+
+
+Connect apis
+
+| Method | Route                      | Description                          |
+| ------ | -------------------------- | ------------------------------------ |
+| POST   | `/api/connects`            | Add a new connect                    |
+| GET    | `/api/connects/my`         | Get all of user's connects           |
+| GET    | `/api/connects/my/private` | Get only private connects of user    |
+| GET    | `/api/connects/public`     | Get all public connects              |
+| PUT    | `/api/connects/:id`        | 🔧 **Update** a connect (owner only) |
+| DELETE | `/api/connects/:id`        | Delete a connect (owner only)        |
+| GET    | `/api/admin/connects`      | Admin: get all connects              |
+| DELETE | `/api/admin/connects/:id`  | Admin: delete any connect            |
+
