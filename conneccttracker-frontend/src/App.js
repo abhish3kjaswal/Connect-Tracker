@@ -1,18 +1,18 @@
-import logo from "./logo.svg";
 import "./App.css";
 import styled from "styled-components";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
+import {BrowserRouter as Router, Routes,Route} from 'react-router-dom';
+import Register from "./Features/auth/Register";
+import Login from "./Features/auth/Login";
 
 function App() {
   return (
     <Wrapper>
-      <Typography variant="h3" gutterBottom>
-        Welcome to Connecct Tracker app
-      </Typography>
-      <Button variant="contained" color="primary">
-        Test MUI Button
-      </Button>
+      <Router>
+        <Routes>
+          <Route path='/' element={<Login />} />
+          <Route path='/register' element={<Register />} />
+        </Routes>
+      </Router>
     </Wrapper>
   );
 }
@@ -20,6 +20,7 @@ function App() {
 const Wrapper = styled.div`
   padding: 2rem;
   background: #f0f0f0;
+  height:100vh;
 `;
 
 export default App;
