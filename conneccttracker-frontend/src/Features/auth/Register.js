@@ -1,10 +1,14 @@
+import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { register } from "./authSlice";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -18,22 +22,22 @@ function Register() {
 
   const [error, setError] = useState({});
 
+  const dispatch = useDispatch();
+  const { loading, authError, token, user } = useSelector(
+    (state) => state.auth
+  );
+
+  const navigate = useNavigate();
+
   const validatePassword = (password) => {
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{6,}$/;
     return regex.test(password);
   };
 
-  const cleanFormData = () => {
-    setFormData({
-      name: "",
-      phone: "",
-      email: "",
-      username: "",
-      password: "",
-    });
-  };
   useEffect(() => {
-    cleanFormData();
+    if (user || token) {
+      navigate("/dashboard");
+    }
   }, []);
 
   const handleChange = (e) => {
@@ -50,16 +54,20 @@ function Register() {
     e.preventDefault();
     // cleanFormData();
 
-    const { password, confirmPassword } = formData;
+    const { name, username, email, password, confirmPassword } = formData;
 
     const newErrors = {};
 
-    if (!validatePassword(password)) {
+    if (!name) {
+      newErrors.name = "Name cannot be empty";
+    } else if (!email) {
+      newErrors.email = "Email cannot be empty";
+    } else if (!username) {
+      newErrors.username = "Username cannot be empty";
+    } else if (!validatePassword(password)) {
       newErrors.password =
         "Password must be at least 6 characters and include a lowercase letter, uppercase letter, and a special character.";
-    }
-
-    if (password !== confirmPassword) {
+    } else if (password !== confirmPassword) {
       newErrors.confirmPassword = "Passwords do not match.";
     }
 
@@ -67,6 +75,7 @@ function Register() {
 
     if (Object.keys(newErrors).length === 0) {
       console.log("handle submit-->", formData);
+      dispatch(register(formData));
     }
   };
 
@@ -74,6 +83,8 @@ function Register() {
 
   return (
     <FormWrapper>
+      {error.general && <Alert severity="error">{error.general}</Alert>}
+
       <Typography variant="h4" gutterBottom align="center" color="primary">
         Register User
       </Typography>
@@ -83,6 +94,8 @@ function Register() {
           name="name"
           fullWidth
           margin="normal"
+          error={!!error.name}
+          helperText={error.name}
           onChange={handleChange}
           required
         />
@@ -99,6 +112,8 @@ function Register() {
           type="email"
           fullWidth
           margin="normal"
+          error={!!error.email}
+          helperText={error.email}
           onChange={handleChange}
           required
         />
@@ -107,6 +122,8 @@ function Register() {
           name="username"
           fullWidth
           margin="normal"
+          error={!!error.username}
+          helperText={error.username}
           onChange={handleChange}
           required
         />
@@ -133,8 +150,8 @@ function Register() {
           required
         />
         <LinkContainer>
-          <Link href="/register" underline="hover">
-            Login existing user
+          <Link href="/" underline="hover">
+            Login Existing User*
           </Link>
         </LinkContainer>
         <Button
@@ -152,10 +169,14 @@ function Register() {
 }
 
 const FormWrapper = styled(Paper)`
-  width: 50%;
+  width: 35%;
   margin: 40px auto;
   padding: 30px;
 `;
 
-const LinkContainer = styled.div``;
+const LinkContainer = styled.div`
+  margin-top: 10px;
+  text-align: end;
+`;
+
 export default Register;
