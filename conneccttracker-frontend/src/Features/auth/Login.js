@@ -1,10 +1,13 @@
+import Alert from "@mui/material/Alert";
 import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { clearError, login } from "./authSlice";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -14,11 +17,19 @@ const Login = () => {
 
   const [errors, setErrors] = useState({});
 
+  const dispatch = useDispatch();
+
+  const { loading, error } = useSelector((state) => {
+    console.log(state.auth);
+    return state.auth;
+  });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
     setFormData({ ...formData, [name]: value });
     setErrors({ ...errors, [name]: "" });
+    dispatch(clearError());
   };
 
   const handleSubmit = (e) => {
@@ -38,6 +49,7 @@ const Login = () => {
 
     if (Object.keys(newErrors).length === 0) {
       console.log("Login data=>", formData);
+      dispatch(login(formData));
     }
   };
 
@@ -46,6 +58,7 @@ const Login = () => {
       <Typography variant="h5" gutterBottom align="center" color="primary">
         Login
       </Typography>
+      {error && <Alert severity="error">{error}</Alert>}
       <form onSubmit={handleSubmit} noValidate>
         <TextField
           label="Username"
@@ -67,9 +80,11 @@ const Login = () => {
           helperText={errors.password}
           required
         />
-        <Link href="/register" underline="hover">
-          Register New User
-        </Link>
+        <LinkContainer>
+          <Link href="/register" underline="hover">
+            Register New User*
+          </Link>
+        </LinkContainer>
         <Button
           variant="contained"
           type="submit"
@@ -85,9 +100,14 @@ const Login = () => {
 };
 
 const FormWrapper = styled(Paper)`
-  width: 50%;
+  width: 30%;
   margin: 40px auto;
   padding: 30px;
+`;
+
+const LinkContainer = styled.div`
+  margin-top: 10px;
+  text-align: end;
 `;
 
 export default Login;
