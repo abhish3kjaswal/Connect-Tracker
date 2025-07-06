@@ -4,10 +4,12 @@ import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { clearError, login } from "./authSlice";
+import { useNavigate } from "react-router-dom";
+import LayoutWrapper from "../../components/LayoutWrapper";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -18,11 +20,18 @@ const Login = () => {
   const [errors, setErrors] = useState({});
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const { loading, error } = useSelector((state) => {
+  const { loading, error,user,token } = useSelector((state) => {
     console.log(state.auth);
     return state.auth;
   });
+
+  useEffect(()=>{
+    if(user && token){
+      navigate("/dashboard");
+    }
+  },[user,token])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -54,7 +63,9 @@ const Login = () => {
   };
 
   return (
-    <FormWrapper elevation={3}>
+    <LayoutWrapper>
+
+    <FormWrapper elevation={3} sx={{mt:8,p:2}}>
       <Typography variant="h5" gutterBottom align="center" color="primary">
         Login
       </Typography>
@@ -96,6 +107,8 @@ const Login = () => {
         </Button>
       </form>
     </FormWrapper>
+    </LayoutWrapper>
+
   );
 };
 

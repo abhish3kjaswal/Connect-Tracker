@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { register } from "./authSlice";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -22,22 +23,22 @@ function Register() {
   const [error, setError] = useState({});
 
   const dispatch = useDispatch();
-  const { loading, authError } = useSelector((state) => state.auth);
+  const { loading, authError, token, user } = useSelector(
+    (state) => state.auth
+  );
+
+  const navigate = useNavigate();
 
   const validatePassword = (password) => {
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{6,}$/;
     return regex.test(password);
   };
 
-  const cleanFormData = () => {
-    setFormData({
-      name: "",
-      phone: "",
-      email: "",
-      username: "",
-      password: "",
-    });
-  };
+  useEffect(() => {
+    if (user || token) {
+      navigate("/dashboard");
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
