@@ -8,7 +8,6 @@ const Dashboard = () => {
     <LayoutWrapper>
       <Typography variant="h4">Welcome to ConnecctTracker Dashboard</Typography>
       <Divider sx={{ my: 3 }} />
-
       <AllConnects />
     </LayoutWrapper>
   );
