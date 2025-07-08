@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import LayoutWrapper from "../components/LayoutWrapper";
 import {
   Avatar,
   Box,
+  Button,
   Card,
   CardContent,
   Divider,
@@ -13,9 +14,11 @@ import {
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import MyConnects from "../components/MyConnects";
+import AddConnectModal from "../components/AddConnectModal";
 
 const MyProfile = () => {
   const { user } = useSelector((state) => state.auth);
+  const [openModal, setOpenModal] = useState(false);
 
   const getInitials = (name) => {
     name
@@ -27,11 +30,20 @@ const MyProfile = () => {
 
   return (
     <LayoutWrapper>
-      <Typography variant="h4">My Profile</Typography>
+      <Box sx={{display:'flex',justifyContent:'space-between'}}> 
+        <Typography variant="h4">My Profile</Typography>
+        <Button
+          variant="contained"
+          onClick={() => setOpenModal(true)}
+          sx={{ mb: 2 }}
+        >
+          + Add Connect
+        </Button>
+      </Box>
       <Divider sx={{ my: 3 }} />
 
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <MyConnects />
+        {/* left side */}
         <ProfileCard>
           <CardContent>
             <Grid
@@ -67,18 +79,24 @@ const MyProfile = () => {
             </Box>
           </CardContent>
         </ProfileCard>
+        {/* right side */}
+        <MyConnects />
       </Box>
+
+      {/* modal */}
+      <AddConnectModal open={openModal} onClose={() => setOpenModal(false)} />
     </LayoutWrapper>
   );
 };
 
 const ProfileCard = styled(Card)`
   max-width: 500px;
-  margin: auto;
+  //   margin: auto;
   padding: 20px;
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   width: 30%;
+  height: 300px;
 `;
 
 const AvatarCircle = styled(Avatar)`

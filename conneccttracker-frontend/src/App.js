@@ -62,7 +62,7 @@ function App() {
 const Wrapper = styled.div`
   padding: 2rem;
   background: #f0f0f0;
-  height: 100vh;
+  height: 100%;
 `;
 
 export default App;
