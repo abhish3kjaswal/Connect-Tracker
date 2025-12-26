@@ -32,15 +32,16 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/dashboard" element={<Dashboard />} />
 
-          <Route
+          {/* <Route
             path="/dashboard"
             element={
               <ProtectedRoute>
                 <Dashboard />
               </ProtectedRoute>
             }
-          />
+          /> */}
 
           <Route
             path="/my-profile"
@@ -61,8 +62,8 @@ function App() {
 
 const Wrapper = styled.div`
   padding: 2rem;
-  background: #f0f0f0;
-  height: 100%;
+  // background: #f0f0f0;
+  // height: 100%;
 `;
 
 export default App;

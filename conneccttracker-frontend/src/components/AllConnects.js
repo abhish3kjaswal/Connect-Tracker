@@ -25,9 +25,6 @@ const AllConnects = () => {
 
   return (
     <Box sx={{ mt: 2 }}>
-      {/* <Typography variant="h4" gutterBottom>
-        Public Connects
-      </Typography> */}
       {loading ? (
         <>
           <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
@@ -44,7 +41,7 @@ const AllConnects = () => {
         </>
       ) : (
         <>
-          <Grid container spacing={10}>
+          <Grid container spacing={8}>
             {publicConnects?.connects?.map((connect) => (
               <Grid item xs={3} sm={3} md={3} key={connect._id}>
                 <CardComp connect={connect} />
